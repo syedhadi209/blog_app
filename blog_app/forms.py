@@ -27,3 +27,9 @@ class LoginForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if not user:
             raise ValidationError("Account with this Email Does not Exist!!")
+
+        if user:
+            verified = user.verified
+            if not verified:
+                raise ValidationError(
+                    "Your Account is not verified Kindly Check your mail.")

@@ -8,23 +8,18 @@
         {% if not form.email.errors %}
         {{form.email(placeholder="Email")}}
     {% else %}
-        <div class="invalid-feedback">
-            {% for error in form.email.errors %}
-                <span>{{error}}</span>
-            {% endfor %}
+        <div class="d-flex flex-column">
+          <div>
+              {% for error in form.email.errors %}
+                  <span>{{error}}</span>
+              {% endfor %}
+          </div>
+          {{form.email(placeholder="Email")}}
         </div>
     {% endif %}
       </div>
-      <div class="input-group imput-group-lg">
-        {% if not form.password.errors %}
+      <div class="input-group imput-group-lg w-100">
         {{form.password(placeholder="Password")}}
-    {% else %}
-        <div class="invalid-feedback">
-            {% for error in form.password.errors %}
-                <span>{{error}}</span>
-            {% endfor %}
-        </div>
-    {% endif %}
       </div>
       </div>
     </fieldset>
@@ -37,7 +32,7 @@
 <div class="pt-3">
     <small class="text-muted">
       Dont Have an Account?
-      <a href="{{url_for('sign_up')}}" class="ml-2">Sign In </a>
+      <a href="{{url_for('sign_up')}}" class="ml-2">Sign Up </a>
     </small>
 </div>
 
