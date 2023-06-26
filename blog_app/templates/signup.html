@@ -4,24 +4,21 @@
     {{form.hidden_tag()}}
     <fieldset class="form-group">
       <legend class="mb-4 p-4">Join Today</legend>
-      <div class="input-group input-group-lg">
-        {{form.username(placeholder="Username")}}
-      </div>
-      <div class="input-group input-group-lg d-flex flex-column justify-content-left align-items-start">
-        {% if form.email.errors %}
-        {{form.email(placeholder="Email")}}
+      {% if form.email.errors %}
         {% for error in form.email.errors %}
-          <div class="invalid">
+          <div class="mb-2">
             <span style="color: red;">{{error}}</span>
           </div>
         {% endfor %}
-        {% else %}
-        {{form.email(placeholder="Email")}}
       {% endif %}
-        
+      <div class="input-group input-group-lg">
+        {{form.username(placeholder="Username",class="p-2 border rounded-t-sm")}}
+      </div>
+      <div class="input-group input-group-lg d-flex flex-column justify-content-left align-items-start">
+        {{form.email(placeholder="Email",class="p-2 border")}}
       </div>
       <div class="input-group input-group-lg">
-        {{form.password(placeholder="Password")}}
+        {{form.password(placeholder="Password",class="p-2 border")}}
       </div>
       </div>
     </fieldset>

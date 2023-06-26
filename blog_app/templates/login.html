@@ -4,22 +4,18 @@
     {{form.hidden_tag()}}
     <fieldset class="form-group">
       <legend class="mb-4 p-4">Log In</legend>
-      <div class="input-group imput-group-lg">
-        {% if not form.email.errors %}
-        {{form.email(placeholder="Email")}}
-    {% else %}
-        <div class="d-flex flex-column">
-          <div>
-              {% for error in form.email.errors %}
-                  <span>{{error}}</span>
-              {% endfor %}
-          </div>
-          {{form.email(placeholder="Email")}}
-        </div>
+      {% if form.email.errors %}
+          {% for error in form.email.errors %}
+              <div class="mb-2">
+                <span style="color: red;">{{error}}</span>
+              </div>
+          {% endfor %}
     {% endif %}
+      <div class="input-group imput-group-lg">
+        {{form.email(placeholder="Email",class="p-2 border")}}
       </div>
       <div class="input-group imput-group-lg w-100">
-        {{form.password(placeholder="Password")}}
+        {{form.password(placeholder="Password",class="p-2 border")}}
       </div>
       </div>
     </fieldset>

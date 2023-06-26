@@ -5,7 +5,7 @@ from blog_app.forms import SignUpForm, LoginForm
 from blog_app.email import send_email
 from flask_mail import Message
 from blog_app.token import generate_token, confirm_token
-from flask_login import login_user, login_required, current_user
+from flask_login import login_user, login_required, current_user, logout_user
 
 
 
@@ -17,8 +17,6 @@ def home():
 @app.route("/signup", methods=['GET', 'POST'])
 def sign_up():
     form = SignUpForm()
-
-
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data, password=form.password.data)
@@ -29,7 +27,6 @@ def sign_up():
         html = render_template('verify_email.html', confirm_url=verify_url)
         subject = "Please confirm your email"
         send_email(form.email.data,subject, html)
-        # login_user(user)
         flash("An Email has been sent to your email please verify your account!!",
               category="success")
         return redirect(url_for('home'))
@@ -46,7 +43,10 @@ def login():
             login_user(user)
             if current_user.is_authenticated:
                 flash("Login Successfull", category="success")
-                return redirect('home')
+                return redirect(url_for('dashboard'))
+        else:
+            flash("Incorrct Credentials",category='danger')
+            return redirect(url_for('login'))
             
 
     return render_template('login.html', title='Login', form=form)
@@ -70,3 +70,17 @@ def verify_email(token):
         db.session.commit()
         flash("You account has been confirmed",category='success')
         return redirect(url_for('login'))
+    
+
+@app.route('/dashboard',methods=['GET','POST'])
+@login_required
+def dashboard():
+    posts = User.query.all()
+    return render_template('dashboard.html',title=current_user.username,posts=posts)
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))

@@ -1,0 +1,24 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="container-fluid mt-4">
+  <div class="container-fluid" style="display: flex; justify-content: end">
+    <a href="" class="btn btn-success">Create New Post</a>
+  </div>
+  <div class="user-data">
+    <div class="custom-container">
+      <p><b>Author : </b>{{current_user.username}}</p>
+      <h2>Title</h2>
+      <p>Description</p>
+    </div>
+    <div class="custom-container">
+      <p><b>Author : </b>{{current_user.username}}</p>
+      <h2>Title</h2>
+      <p>Description</p>
+    </div>
+    <div class="custom-container">
+      <p><b>Author : </b>{{current_user.username}}</p>
+      <h2>Title</h2>
+      <p>Description</p>
+    </div>
+  </div>
+</div>
+{% endblock content%}
