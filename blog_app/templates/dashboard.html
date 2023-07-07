@@ -1,24 +1,122 @@
 {% extends 'layout.html' %} {% block content %}
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4 position-relative">
   <div class="container-fluid" style="display: flex; justify-content: end">
-    <a href="" class="btn btn-success">Create New Post</a>
+    <a href="{{url_for('new_post')}}" class="btn btn-success"
+      >Create New Post</a
+    >
   </div>
   <div class="user-data">
+    {% if posts | length > 0 %} {% for post in posts %}
     <div class="custom-container">
-      <p><b>Author : </b>{{current_user.username}}</p>
-      <h2>Title</h2>
-      <p>Description</p>
+      <div class="author">
+        <p style="text-transform: capitalize">
+          <b>Author : </b>{{post.user.username}}
+        </p>
+        {% if post.user_id == current_user.id %}
+        <div class="icons-delete-update">
+          <a href="{{url_for('update_post', postId=post.post_id)}}"
+            ><i class="fa-sharp fa-solid fa-pen"></i
+          ></a>
+          <a href="{{url_for('delete_post', postId=post.post_id)}}"
+            ><i class="fa-solid fa-trash"></i
+          ></a>
+        </div>
+        {% endif %}
+      </div>
+      <div class="text-data">
+        <h2>{{post.title}}</h2>
+        <p>{{post.content}}</p>
+      </div>
+      <div class="post-attachment" style="text-align: center">
+        {% if post.attachement %}
+        <img src="{{post.attachement}}" alt="{{post.title}}" />
+        {% else %}
+        <p>No Attachment</p>
+        {%endif%}
+      </div>
+      <div class="like-comment">
+        <div class="like">
+          <a
+            href="{{url_for('like', parentId=post.post_id, userId=current_user.id,parentType='post')}}"
+          >
+            {% if Likes.query.filter_by(user_id=current_user.id,
+            parent_id=post.post_id,parent_type='post').all() | length > 0 %}
+            <i class="fa-solid fa-heart" style="color: red"></i>
+            {% else %}
+            <i class="fa-regular fa-heart"></i>
+            {% endif %}
+          </a>
+          <p>
+            {{Likes.query.filter_by(parent_id=post.post_id,parent_type="post").all()
+            | length}} Likes
+          </p>
+        </div>
+        <div class="comment-field">
+          <form action="" method="post" style="width: 100%">
+            {{form.hidden_tag()}}
+            <span></span>
+            {{form.comment(placeholder="Write Comment")}}
+            <input type="hidden" name="post-id" value="{{post.post_id}}" />
+            <input type="hidden" name="parent-type" value="post" />
+            {{form.submit(class="btn btn-success", style="width:30%;")}}
+          </form>
+        </div>
+        <div class="comments">
+          {% for comment in Comments.query.filter_by(parent_id=post.post_id,
+          parent_type='post') %}
+          <div class="comment-body">
+            <div class="comment-upper">
+              <div class="comment-left">
+                <img
+                  src="{{url_for('static',filename='images/avatar.jpeg')}}"
+                  alt=""
+                  class="rounded-circle"
+                  style="width: 50px; height: 100%"
+                  loading="lazy"
+                />
+                <div class="comment-data">
+                  <p style="margin: 0 !important">
+                    <b style="text-transform: uppercase"
+                      >{{comment.user.username}}</b
+                    >
+                  </p>
+                  <p>{{comment.content}}</p>
+                </div>
+              </div>
+              <div class="comment-right">
+                <a
+                  href="{{url_for('like', parentId=comment.comment_id, userId=current_user.id,parentType='comment')}}"
+                  >{% if Likes.query.filter_by(user_id=current_user.id,
+                  parent_id=comment.comment_id,parent_type='comment').all() |
+                  length > 0 %}
+                  <i class="fa-solid fa-heart" style="color: red"></i>
+                  {% else %}
+                  <i class="fa-regular fa-heart"></i>
+                  {% endif %}
+                </a>
+                <a
+                  href="{{url_for('reply',parentId=comment.comment_id, parentType='comment')}}"
+                >
+                  <i class="fa-regular fa-comment"></i>
+                </a>
+              </div>
+            </div>
+            <div class="replies">
+              {% for reply in
+              Comments.query.filter_by(parent_id=comment.comment_id,parent_type='comment')%}
+              <div class="replied" style="border-bottom: 1px solid gray">
+                <p>{{reply.content}}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
-    <div class="custom-container">
-      <p><b>Author : </b>{{current_user.username}}</p>
-      <h2>Title</h2>
-      <p>Description</p>
-    </div>
-    <div class="custom-container">
-      <p><b>Author : </b>{{current_user.username}}</p>
-      <h2>Title</h2>
-      <p>Description</p>
-    </div>
+    {% endfor %} {% else %}
+    <h3>No Posts To Show</h3>
+    {% endif %}
   </div>
 </div>
 {% endblock content%}

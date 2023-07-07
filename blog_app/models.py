@@ -29,25 +29,20 @@ class Post(db.Model):
     title = db.Column(db.String(50), nullable=False)
     content = db.Column(db.String(500), nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('user.id'))
-    comments = db.relationship('Comment', backref='post')
-    likes = db.relationship('Like', backref='post')
 
 
 class Comment(db.Model):
     comment_id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(50), nullable=False)
-    post_id = db.Column(db.Integer, ForeignKey('post.post_id'))
     user_id = db.Column(Integer, ForeignKey('user.id'))
-    replied = db.Column(db.Boolean, default=False)
-    replies = db.relationship('Reply', backref='comment')
+    parent_id = db.Column(db.Integer, nullable=False)
+    parent_type = db.Column(db.String(20), nullable=False)
 
 
 class Like(db.Model):
     like_id = Column(db.Integer, primary_key=True)
     user_id = Column(db.Integer, ForeignKey('user.id'))
-    post_id = Column(db.Integer, ForeignKey('post.post_id'))
+    parent_id = Column(Integer, nullable=False)
+    parent_type = Column(String(20), nullable=False)
 
 
-class Reply(db.Model):
-    reply_id = db.Column(db.Integer, primary_key=True)
-    comment_id = db.Column(db.Integer, ForeignKey('comment.comment_id'))
