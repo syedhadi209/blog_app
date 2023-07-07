@@ -4,42 +4,21 @@
     {{form.hidden_tag()}}
     <fieldset class="form-group">
       <legend class="mb-4 p-4">Join Today</legend>
+      {% if form.email.errors %}
+        {% for error in form.email.errors %}
+          <div class="mb-2">
+            <span style="color: red;">{{error}}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
       <div class="input-group input-group-lg">
-        {% if form.username.errors %}
-        {{form.username(placeholder="Username")}}
-            <div class="invalid-feedback">
-                {% for error in form.username.errors %}
-                    <span>{{error}}</span>
-                {% endfor %}
-            </div>
-            
-        {% else %}
-            {{form.username(placeholder="Username")}}
-        {% endif %}
+        {{form.username(placeholder="Username",class="p-2 border rounded-t-sm")}}
+      </div>
+      <div class="input-group input-group-lg d-flex flex-column justify-content-left align-items-start">
+        {{form.email(placeholder="Email",class="p-2 border")}}
       </div>
       <div class="input-group input-group-lg">
-        {% if form.email.errors %}
-        {{form.email(placeholder="Email")}}
-            <div class="invalid-feedback">
-                <span>{{form.email.errors}}</span>
-            </div>
-            
-        {% else %}
-            {{form.email(placeholder="Email")}}
-        {% endif %}
-      </div>
-      <div class="input-group input-group-lg">
-        {% if form.password.errors %}
-        {{form.password(placeholder="Password")}}
-            <div class="invalid-feedback">
-                {% for error in form.password.errors %}
-                    <span>{{error}}</span>
-                {% endfor %}
-            </div>
-            
-        {% else %}
-            {{form.password(placeholder="Password")}}
-        {% endif %}
+        {{form.password(placeholder="Password",class="p-2 border")}}
       </div>
       </div>
     </fieldset>

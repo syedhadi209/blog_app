@@ -4,27 +4,18 @@
     {{form.hidden_tag()}}
     <fieldset class="form-group">
       <legend class="mb-4 p-4">Log In</legend>
-      <div class="input-group imput-group-lg">
-        {% if not form.email.errors %}
-        {{form.email(placeholder="Email")}}
-    {% else %}
-        <div class="invalid-feedback">
-            {% for error in form.email.errors %}
-                <span>{{error}}</span>
-            {% endfor %}
-        </div>
+      {% if form.email.errors %}
+          {% for error in form.email.errors %}
+              <div class="mb-2">
+                <span style="color: red;">{{error}}</span>
+              </div>
+          {% endfor %}
     {% endif %}
+      <div class="input-group imput-group-lg">
+        {{form.email(placeholder="Email",class="p-2 border")}}
       </div>
-      <div class="input-group imput-group-lg">
-        {% if not form.password.errors %}
-        {{form.password(placeholder="Password")}}
-    {% else %}
-        <div class="invalid-feedback">
-            {% for error in form.password.errors %}
-                <span>{{error}}</span>
-            {% endfor %}
-        </div>
-    {% endif %}
+      <div class="input-group imput-group-lg w-100">
+        {{form.password(placeholder="Password",class="p-2 border")}}
       </div>
       </div>
     </fieldset>
@@ -37,7 +28,7 @@
 <div class="pt-3">
     <small class="text-muted">
       Dont Have an Account?
-      <a href="{{url_for('sign_up')}}" class="ml-2">Sign In </a>
+      <a href="{{url_for('sign_up')}}" class="ml-2">Sign Up </a>
     </small>
 </div>
 

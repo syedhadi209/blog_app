@@ -25,5 +25,35 @@ class LoginForm(FlaskForm):
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
+        if user:
+            verified = user.verified
+            if not verified:
+                raise ValidationError("Your Account is not verified Kindly Check your mail.")
+            
         if not user:
-            raise ValidationError("Account with this Email Does not Exist!!")
+            raise ValidationError("Incorrect Credentials")
+        
+
+
+class NewPost(FlaskForm):
+    title = StringField("Title",validators=[DataRequired(), Length(max=20)])
+    content = TextAreaField("Description")
+    attachment = FileField("Add Attachment",validators=[FileAllowed(['jpg','jpeg'])])
+    submit = SubmitField("Create New Post")
+
+
+class CommentForm(FlaskForm):
+    comment = StringField("Comment",validators=[DataRequired()])
+    submit = SubmitField("Add Comment")
+
+
+class UpdatePostForm(FlaskForm):
+    title = StringField("Title",validators=[DataRequired(), Length(max=20)])
+    content = TextAreaField("Description")
+    attachment = FileField("Add Attachment",validators=[FileAllowed(['jpg','jpeg'])])
+    submit = SubmitField("Update Post")
+
+
+class ReplyForm(FlaskForm):
+    reply = StringField("Reply",validators=[DataRequired()])
+    submit = SubmitField("Reply")
